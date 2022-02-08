@@ -10,7 +10,7 @@ Question 2 :
 Question 3:
 
 
-Q4: on telecharge le dernier génôme current release
+Q4: on telecharge le dernier génôme current release <br>
 HOW TO USE: <br>
 conda create -n yourEnv <br>
 conda activate yourEnv <br>
