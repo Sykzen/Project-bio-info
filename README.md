@@ -12,6 +12,6 @@ Question 3:
 
 Q4: on telecharge le dernier génôme current release
 HOW TO USE:
-conda create -n yourEnv
+conda create -n yourEnv <br>
 conda activate yourEnv
 conda install python=3.10.0
