@@ -15,4 +15,9 @@ HOW TO USE: <br>
 conda create -n yourEnv <br>
 conda activate yourEnv <br>
 conda install python=3.10.0 <br>
-conda install openjdk = 8 
+conda install git
+git clone Sykzen/Project-bio-info <br>
+python download&init.py
+conda install openjdk = 8 <br>
+
+ERR2299966
