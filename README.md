@@ -15,3 +15,4 @@ HOW TO USE: <br>
 conda create -n yourEnv <br>
 conda activate yourEnv <br>
 conda install python=3.10.0 <br>
+conda install openjdk = 8 
