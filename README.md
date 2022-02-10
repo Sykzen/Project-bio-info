@@ -22,7 +22,8 @@ into the shell
 git clone Sykzen/Project-bio-info 
 cd server Project-bio-info
 docker-compose up 
-``
+```
+
 ## Contributors
 
 - [Sykzen](https://github.com/Sykzen) 
