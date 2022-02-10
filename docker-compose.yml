@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  bioinfo:
+    #restart : always
+    build : .
+    tty: true 
+    #image: bioinfoc
+    container_name: valtest
+   # volumes: #pour relier la machine au conteneur
+   #   - .:/home/Sudies/ProjetBioInfo

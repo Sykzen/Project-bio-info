@@ -1,0 +1,35 @@
+#Pour executer dockerfile
+docker build .
+#executer l'image du dockerfile pour devenir container 
+docker run -t -d name_container
+#docker build with image name
+docker build -t image_name .
+#remove docker volumes data
+docker volume prune
+#voir les images
+docker images
+#Pour activer les images
+docker-compose build
+#Crée le serveur et l'executer
+docker-compose up
+#forcer la recreation
+docker-compose up --force-recreate
+#Voir les containeur activé
+docker ps -a
+#
+----- IMPORTANT #se mettre sur le conteneur ----------------------------------------
+docker exec -it le nom du conteneur bash
+docker exec -it djangocv bash
+----------------SUR DOCKER NANOVIM n'est pas installé on fait donc ------------------------
+apt-get update
+apt-get -y install sudo (instaler sudo)
+apt-get install vim nano
+
+
+#---------------------------------------Commande habituel--------------------------------------
+#Connecter le serveur
+docker-compose up
+#----------------------------Poblème courant---------------------------
+Docker ne eror runnin
+sol Open terminal
+CProgram FilesDockerDocker .DockerCli.exe -SwitchDaemon
