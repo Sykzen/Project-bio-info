@@ -2,15 +2,14 @@ import json
 import os
 import hashlib
 import urllib.request
-f=open("md5.json")
+#f=open("md5.json")
 url = 'https://pypi.org/project/wget/'
 
-d=json.load(f)
+#d=json.load(f)
 
 class DownloadAndInit:
-    def __init__(self,urldata,urlgenome):
-        self.urlData = urldata
-        self.urlGenome=urlgenome
+    def __init__(self):
+        pass
     def downloadDependencies(self):
         for i in ["ERR2299966","ERR2299967","ERR2299968","ERR2299969","ERR2299970","ERR2299971","ERR2299972","ERR2299973","ERR2299974","ERR2299975","ERR2299976","ERR2299977","ERR2299978","ERR2299979","ERR2299980","ERR2299981","ERR2299982","ERR2299983","ERR2299984","ERR2299985","ERR2299986","ERR2299987","ERR2299988","ERR2300252","ERR2300253","ERR2300254"]:
             runaccession="python enaBrowserTools/python3/enaDataGet.py -f fastq -d data " +i
@@ -35,5 +34,5 @@ class DownloadAndInit:
         return True
 
 
-etude.downloadGenomeReference("")
-etude.checkmd5()
+t=DownloadAndInit()
+t.downloadDependencies()
