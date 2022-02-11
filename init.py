@@ -13,13 +13,10 @@ class Init:
         link=[i["fastq_ftp"].split(";")[0]  for i in data if len(i["fastq_ftp"].split(";"))==1] + [i["fastq_ftp"].split(";")[1]  for i in data if len(i["fastq_ftp"].split(";"))==2]
         for i in link:
             cmd="wget "+ i
-            print(cmd)
-            os.system(cmd)
-            
-        
-    def downloadDataX(self):
-        requests.get(self.url)
-        urllib.request.urlretrieve(self.urlData)
+            os.system(cmd)            
+    def downloadDataX(self,link):
+        FinalUrl="wget "+link
+        os.system(FinalUrl)
     def downloadGenomeReference(urlgenome):
         self.ulrGenome
         urllib.request.urlretrieve(self.urlGenome)
@@ -36,4 +33,5 @@ class Init:
 
 
 t=Init()
-t.downloadData(f)
+#t.downloadData(f)
+t.downloadX("http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz")

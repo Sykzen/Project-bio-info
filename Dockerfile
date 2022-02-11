@@ -6,12 +6,13 @@ RUN sudo apt-get -y install git
 RUN sudo apt-get -y install python3
 RUN sudo apt-get install wget
 RUN mkdir /home/Project
+RUN git clone https://github.com/Sykzen/Project-bio-info.git /home/Project
 WORKDIR /home/Project
 #cd /home/Project/Project-bio-info
-RUN git clone https://github.com/Sykzen/Project-bio-info.git /home/Project
+
 #RUN cd Project-bio-info
 RUN git clone https://github.com/lh3/bwa.git
-RUN wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR164/ERR164407/ERR164407.fastq.gz
+EXPOSE 5000
 
 #CMD python3 init.py
 
