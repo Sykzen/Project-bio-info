@@ -2,21 +2,22 @@ import json
 import os
 import hashlib
 import urllib.request
-#f=open("md5.json")
-url = 'https://pypi.org/project/wget/'
+f=json.load(open("filereport.json"))
 
 #d=json.load(f)
 
-class DownloadAndInit:
+class Init:
     def __init__(self):
         pass
-    def downloadDependencies(self):
-        for i in ["ERR2299966","ERR2299967","ERR2299968","ERR2299969","ERR2299970","ERR2299971","ERR2299972","ERR2299973","ERR2299974","ERR2299975","ERR2299976","ERR2299977","ERR2299978","ERR2299979","ERR2299980","ERR2299981","ERR2299982","ERR2299983","ERR2299984","ERR2299985","ERR2299986","ERR2299987","ERR2299988","ERR2300252","ERR2300253","ERR2300254"]:
-            runaccession="python enaBrowserTools/python3/enaDataGet.py -f fastq -d data " +i
-            os.system(runaccession)
+    def downloadData(self,data):
+        link=[i["fastq_ftp"].split(";")[0]  for i in data if len(i["fastq_ftp"].split(";"))==1] + [i["fastq_ftp"].split(";")[1]  for i in data if len(i["fastq_ftp"].split(";"))==2]
+        for i in link:
+            cmd="wget "+ i
+            print(cmd)
+            os.system(cmd)
             
         
-    def downloadData(self):
+    def downloadDataX(self):
         requests.get(self.url)
         urllib.request.urlretrieve(self.urlData)
     def downloadGenomeReference(urlgenome):
@@ -34,5 +35,5 @@ class DownloadAndInit:
         return True
 
 
-t=DownloadAndInit()
-t.downloadDependencies()
+t=Init()
+t.downloadData(f)
