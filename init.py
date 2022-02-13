@@ -21,7 +21,6 @@ class Init:
             os.system(cmd)            
     def downloadDataX(self,link):
         FinalUrl="wget "+link
-        print(FinalUrl)
         os.system(FinalUrl)
     def dezipeTgzX(self,link):
         tar=tarfile.open(link,"r:gz")
@@ -53,11 +52,11 @@ class Init:
 
 t=Init()
 #download full 26 data from PROJ
-t.downloadData(f,[0,23])
+#t.downloadData(f,[0,23])
 #check the MD5
 # t.checkmd5()
 #download Genome Reference
-t.downloadDataX("http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz")
+#t.downloadDataX("http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz")
 #dezip genome reference Racine
 t.dezipeTgzX("gn.tgz")
 #dezip genome reference utulisé

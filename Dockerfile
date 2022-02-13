@@ -9,14 +9,15 @@ RUN sudo apt-get -y install \
     make \
     libz-dev \
     gcc
-RUN git clone https://github.com/Sykzen/Project-bio-info.git /home/Project
-RUN mkdir /home/Project
+
+
 
 WORKDIR /home/Project
 
 RUN sudo apt-get -y install openjdk-8-jdk
 #cd /home/Project/Project-bio-info
-
+WORKDIR /home/Project
+RUN git clone https://github.com/Sykzen/Project-bio-info.git /home/Project
 #RUN cd Project-bio-info
 RUN git clone https://github.com/lh3/bwa.git
 
@@ -35,11 +36,18 @@ RUN tar -vxjf bcftools-1.9.tar.bz2
 RUN tar -vxjf samtools-1.9.tar.bz2
 #RUN cd samtools;make
 #Donwload GATK4.2.5.0
-#RUN wget https://github.com/broadinstitute/gatk/releases/download/4.2.5.0/gatk-4.2.5.0.zip
-EXPOSE 5000
-CMD python3 init.py
-RUN ./bwa index ./S288C_reference_sequence_R64-3-1_20210421.fsa
+RUN wget https://github.com/broadinstitute/gatk/releases/download/4.2.5.0/gatk-4.2.5.0.zip
+#EXPOSE 5000
+RUN wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/006/ERR2299966/ERR2299966_2.fastq.gz
+RUN wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/006/ERR2299966/ERR2299966_1.fastq.gz
+RUN wget http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz
 
-#RUN exec bash
+CMD ["python3","init.py"] 
+RUN mv S288C_reference_sequence_R64-3-1_20210421.fsa bwa
+RUN mv ERR2299966_1.fastq.gz bwa
+RUN mv ERR2299966_2.fastq.gz bwa
+RUN ./bwa mem S288C_reference_sequence_R64-3-1_20210421.fsa ERR2299966_1.fastq.gz ERR2299966_2.fastq.gz | gzip -3 > aln-pe-sam.gz 
+
+#RUN ./bwa index ./S288C_reference_sequence_R64-3-1_20210421.fsa
 
 
