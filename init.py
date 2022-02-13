@@ -58,6 +58,6 @@ t=Init()
 #download Genome Reference
 #t.downloadDataX("http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz")
 #dezip genome reference Racine
-t.dezipeTgzX("gn.tgz")
+t.dezipeTgzX("S288C_reference_genome_Current_Release.tgz")
 #dezip genome reference utulisé
 t.dezipeGzX("S288C_reference_genome_R64-3-1_20210421/S288C_reference_sequence_R64-3-1_20210421.fsa.gz")

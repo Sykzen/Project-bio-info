@@ -16,8 +16,9 @@ WORKDIR /home/Project
 
 RUN sudo apt-get -y install openjdk-8-jdk
 #cd /home/Project/Project-bio-info
-WORKDIR /home/Project
 RUN git clone https://github.com/Sykzen/Project-bio-info.git /home/Project
+WORKDIR /home/Project
+
 #RUN cd Project-bio-info
 RUN git clone https://github.com/lh3/bwa.git
 
@@ -42,12 +43,13 @@ RUN wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/006/ERR2299966/ERR2299966_2.fastq.g
 RUN wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/006/ERR2299966/ERR2299966_1.fastq.gz
 RUN wget http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz
 
-CMD ["python3","init.py"] 
+RUN ["python3","init.py"] 
 RUN mv S288C_reference_sequence_R64-3-1_20210421.fsa bwa
 RUN mv ERR2299966_1.fastq.gz bwa
 RUN mv ERR2299966_2.fastq.gz bwa
+WORKDIR /home/Project/bwa 
+RUN ./bwa index S288C_reference_sequence_R64-3-1_20210421.fsa
 RUN ./bwa mem S288C_reference_sequence_R64-3-1_20210421.fsa ERR2299966_1.fastq.gz ERR2299966_2.fastq.gz | gzip -3 > aln-pe-sam.gz 
 
-#RUN ./bwa index ./S288C_reference_sequence_R64-3-1_20210421.fsa
 
 
