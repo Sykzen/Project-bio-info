@@ -14,7 +14,7 @@ class Init:
     def __init__(self):
         pass
     def downloadData(self,data,lim):
-        link=[i["fastq_ftp"].split(";")[0]  for i in data if len(i["fastq_ftp"].split(";"))==1] + [i["fastq_ftp"].split(";")[1]  for i in data if len(i["fastq_ftp"].split(";"))==2]
+        link=[i["fastq_ftp"].split(";")[1]  for i in data if len(i["fastq_ftp"].split(";"))==2] + [i["fastq_ftp"].split(";")[0]  for i in data if len(i["fastq_ftp"].split(";"))==1]
         for i in link[:lim]:
             cmd="wget "+ i
             os.system(cmd)            
@@ -56,7 +56,7 @@ t.downloadData(f,2)
 #check the MD5
 #b t.checkmd5()
 #download Genome Reference
-t.downloadX("http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz")
+t.downloadDataX("http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz")
 #dezip genome reference Racine
 t.dezipeTgzX("gn.tgz")
 #dezip genome reference utulisé
