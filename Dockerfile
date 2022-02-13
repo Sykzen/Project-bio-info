@@ -11,9 +11,9 @@ RUN sudo apt-get -y install \
     gcc
 
 RUN mkdir /home/Project
-
-WORKDIR /home/Project
 RUN git clone https://github.com/Sykzen/Project-bio-info.git /home/Project
+WORKDIR /home/Project
+
 RUN sudo apt-get -y install openjdk-8-jdk
 #cd /home/Project/Project-bio-info
 
@@ -35,10 +35,10 @@ RUN tar -vxjf bcftools-1.9.tar.bz2
 RUN tar -vxjf samtools-1.9.tar.bz2
 #RUN cd samtools;make
 #Donwload GATK4.2.5.0
-RUN wget https://github.com/broadinstitute/gatk/releases/download/4.2.5.0/gatk-4.2.5.0.zip
+#RUN wget https://github.com/broadinstitute/gatk/releases/download/4.2.5.0/gatk-4.2.5.0.zip
 EXPOSE 5000
 CMD python3 init.py
-
+RUN ./bwa index ./S288C_reference_sequence_R64-3-1_20210421.fsa
 
 #RUN exec bash
 

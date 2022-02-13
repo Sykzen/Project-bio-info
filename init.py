@@ -13,11 +13,13 @@ f=json.load(open("filereport.json"))
 class Init:
     def __init__(self):
         pass
-    def downloadData(self,data,lim):
-        link=[i["fastq_ftp"].split(";")[1]  for i in data if len(i["fastq_ftp"].split(";"))==2] + [i["fastq_ftp"].split(";")[0]  for i in data if len(i["fastq_ftp"].split(";"))==1]
-        for i in link[:lim]:
+    def downloadData(self,data,indeks):
+        link=[i["fastq_ftp"].split(";")[0]  for i in data if len(i["fastq_ftp"].split(";"))==2] +[i["fastq_ftp"].split(";")[1]  for i in data if len(i["fastq_ftp"].split(";"))==2]+ [i["fastq_ftp"].split(";")[0]  for i in data if len(i["fastq_ftp"].split(";"))==1]
+        #for i in link
+        for i in [link[i] for i in indeks]:
             cmd="wget "+ i
-            os.system(cmd)            
+            print(cmd)
+            #os.system(cmd)            
     def downloadDataX(self,link):
         FinalUrl="wget "+link
         print(FinalUrl)
@@ -52,12 +54,12 @@ class Init:
 
 t=Init()
 #download full 26 data from PROJ
-t.downloadData(f,2)
+t.downloadData(f,[0,23])
 #check the MD5
-#b t.checkmd5()
+# t.checkmd5()
 #download Genome Reference
-t.downloadDataX("http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz")
+#t.downloadDataX("http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz")
 #dezip genome reference Racine
-t.dezipeTgzX("gn.tgz")
+#t.dezipeTgzX("gn.tgz")
 #dezip genome reference utulisé
-t.dezipeGzX("S288C_reference_genome_R64-3-1_20210421/S288C_reference_sequence_R64-3-1_20210421.fsa.gz")
+#t.dezipeGzX("S288C_reference_genome_R64-3-1_20210421/S288C_reference_sequence_R64-3-1_20210421.fsa.gz")
