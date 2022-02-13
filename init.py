@@ -18,8 +18,7 @@ class Init:
         #for i in link
         for i in [link[i] for i in indeks]:
             cmd="wget "+ i
-            print(cmd)
-            #os.system(cmd)            
+            os.system(cmd)            
     def downloadDataX(self,link):
         FinalUrl="wget "+link
         print(FinalUrl)
@@ -58,8 +57,8 @@ t.downloadData(f,[0,23])
 #check the MD5
 # t.checkmd5()
 #download Genome Reference
-#t.downloadDataX("http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz")
+t.downloadDataX("http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz")
 #dezip genome reference Racine
-#t.dezipeTgzX("gn.tgz")
+t.dezipeTgzX("gn.tgz")
 #dezip genome reference utulisé
-#t.dezipeGzX("S288C_reference_genome_R64-3-1_20210421/S288C_reference_sequence_R64-3-1_20210421.fsa.gz")
+t.dezipeGzX("S288C_reference_genome_R64-3-1_20210421/S288C_reference_sequence_R64-3-1_20210421.fsa.gz")

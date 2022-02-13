@@ -9,9 +9,9 @@ RUN sudo apt-get -y install \
     make \
     libz-dev \
     gcc
-
-RUN mkdir /home/Project
 RUN git clone https://github.com/Sykzen/Project-bio-info.git /home/Project
+RUN mkdir /home/Project
+
 WORKDIR /home/Project
 
 RUN sudo apt-get -y install openjdk-8-jdk
