@@ -1,4 +1,4 @@
-import subprocess
-import sys
+def call(param):
+    print(f'{param} with type={type(param)}')
 
-result = subprocess.run([sys.executable, "-c", "print('ocean')"])
+print('hi')

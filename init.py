@@ -61,3 +61,4 @@ t=Init()
 t.dezipeTgzX("S288C_reference_genome_Current_Release.tgz")
 #dezip genome reference utulisé
 t.dezipeGzX("S288C_reference_genome_R64-3-1_20210421/S288C_reference_sequence_R64-3-1_20210421.fsa.gz")
+print(" r u looping forever? ")

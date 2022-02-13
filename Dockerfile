@@ -8,15 +8,17 @@ RUN sudo apt-get -y install \
     wget \
     make \
     libz-dev \
-    gcc
+    gcc \
+    unzip \
+    vim
 
 
 
 WORKDIR /home/Project
-
+RUN git clone https://github.com/Sykzen/Project-bio-info.git /home/Project
 RUN sudo apt-get -y install openjdk-8-jdk
 #cd /home/Project/Project-bio-info
-RUN git clone https://github.com/Sykzen/Project-bio-info.git /home/Project
+
 WORKDIR /home/Project
 
 #RUN cd Project-bio-info
@@ -49,7 +51,16 @@ RUN mv ERR2299966_1.fastq.gz bwa
 RUN mv ERR2299966_2.fastq.gz bwa
 WORKDIR /home/Project/bwa 
 RUN ./bwa index S288C_reference_sequence_R64-3-1_20210421.fsa
-RUN ./bwa mem S288C_reference_sequence_R64-3-1_20210421.fsa ERR2299966_1.fastq.gz ERR2299966_2.fastq.gz | gzip -3 > aln-pe-sam.gz 
+RUN ./bwa mem S288C_reference_sequence_R64-3-1_20210421.fsa ERR2299966_1.fastq.gz ERR2299966_2.fastq.gz | gzip -3 > aln-pe.sam.gz 
+RUN gunzip -f aln-pe.sam.gz
+RUN unzip gatk gatk-4.2.5.0.zip
+# ?
+RUN mv aln-pe.sam gatk-4.2.5.0
+WORKDIR /home/Project/gatk-4.2.5.0
+RUN java -jar gatk-package-4.2.5.0-local.jar
+RUN java -jar gatk-package-4.2.5.0-spark.jar
+
+
 
 
 
