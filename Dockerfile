@@ -1,7 +1,7 @@
 #FROM python:3.9-alpine3.14
 FROM ubuntu:18.04
 RUN apt-get update && \
-      apt-get -y install sudo 
+    apt-get -y install sudo 
 RUN sudo apt-get -y install \
     git \
     python3 \
@@ -38,8 +38,8 @@ RUN tar -vxjf bcftools-1.9.tar.bz2
 #RUN cd bcftools;make
 RUN tar -vxjf samtools-1.9.tar.bz2
 #RUN cd samtools;make
-#Donwload GATK4.2.5.0
-RUN wget https://github.com/broadinstitute/gatk/releases/download/4.2.5.0/gatk-4.2.5.0.zip
+#4.1.4.0
+RUN wget https://github.com/broadinstitute/gatk/releases/download/4.1.4.0/gatk-4.1.4.0.zip
 #EXPOSE 5000
 RUN wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/006/ERR2299966/ERR2299966_2.fastq.gz
 RUN wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/006/ERR2299966/ERR2299966_1.fastq.gz
@@ -53,14 +53,18 @@ WORKDIR /home/Project/bwa
 RUN ./bwa index S288C_reference_sequence_R64-3-1_20210421.fsa
 RUN ./bwa mem S288C_reference_sequence_R64-3-1_20210421.fsa ERR2299966_1.fastq.gz ERR2299966_2.fastq.gz | gzip -3 > aln-pe.sam.gz 
 RUN gunzip -f aln-pe.sam.gz
-RUN unzip gatk gatk-4.2.5.0.zip
+RUN unzip  gatk-4.1.4.0.zip
 # ?
-RUN mv aln-pe.sam gatk-4.2.5.0
-WORKDIR /home/Project/gatk-4.2.5.0
-RUN java -jar gatk-package-4.2.5.0-local.jar
-RUN java -jar gatk-package-4.2.5.0-spark.jar
-
-
-
-
-
+RUN mv aln-pe.sam ../gatk-4.1.4.0
+WORKDIR /home/Project/gatk-4.1.4.0
+RUN java -jar gatk-package-4.1.4.0-local.jar
+RUN java -jar gatk-package-4.1.4.0-spark.jar
+RUN alias python='/usr/bin/python3'
+RUN sudo ln -s /usr/bin/python3 /usr/bin/python
+RUN ./gatk MarkDuplicatesSpark  -I aln-pe.sam  -O OutputNum1.bam
+#RUN wget  --quiet -yes https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh 
+#RUN bash Miniconda2-latest-Linux-x86_64.sh
+#RUN souce ~/.bashrc
+#RUN exec bash
+#RUN souce ~/.bashrc
+#RUN conda install -c bioconda samtools bcftools
