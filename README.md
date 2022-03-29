@@ -18,18 +18,25 @@ Having docker and git installed </br>
 ## Installation
 
 ## MAC/Windows
-
+![Alt text](static/conception.png)
 into the shell
+```
+git clone Sykzen/Project-bio-info 
+cd server Project-bio-info
+docker-compose up
+docker exec -it valtest bash
+```
+## Linux 
+![Alt text](static/conception.png)
+if you don't have docker desktop installed then
 ```
 git clone Sykzen/Project-bio-info 
 cd server Project-bio-info
 docker buildx create --use --name larger_log --driver-opt env.BUILDKIT_STEP_LOG_MAX_SIZE=50000000 
 docker buildx build .
 ```
-## Linux 
-
 ## Contributors
-```
+
 - [Sykzen](https://github.com/Sykzen) 
 - [Sarmedd](https://github.com/Sarmedd)
 - [BOUNEGTAMohamedRami](https://github.com/BOUNEGTAMohamedRami)
