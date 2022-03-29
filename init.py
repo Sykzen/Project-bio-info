@@ -54,7 +54,7 @@ class Init:
 t=Init()
 #download full 26 data from PROJ
 t.downloadData(f)
-os.system("ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/003/ERR2299973/ERR2299973_1.fastq.gz;ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/003/ERR2299973/ERR2299973_2.fastq.gz")
+os.system("wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/003/ERR2299973/ERR2299973_1.fastq.gz")
 #check the MD5
 t.checkmd5()
 #download Genome Reference
