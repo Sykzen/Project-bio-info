@@ -14,6 +14,7 @@ class Init:
     def __init__(self):
         pass
     def downloadData(self,data):
+        pass
        # link=[i["fastq_ftp"].split(";")[0]  for i in data if len(i["fastq_ftp"].split(";"))==2] +[i["fastq_ftp"].split(";")[1]  for i in data if len(i["fastq_ftp"].split(";"))==2]+ [i["fastq_ftp"].split(";")[0]  for i in data if len(i["fastq_ftp"].split(";"))==1]
         #for i in link
         #for i in link:
