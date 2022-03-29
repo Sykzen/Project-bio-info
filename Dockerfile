@@ -10,7 +10,7 @@ RUN sudo apt-get -y install \
     libz-dev \
     gcc \
     unzip \
-    vim
+    vim 
 
 
 
@@ -19,13 +19,11 @@ RUN git clone https://github.com/Sykzen/Project-bio-info.git /home/Project
 RUN sudo apt-get -y install openjdk-8-jdk
 #cd /home/Project/Project-bio-info
 
-WORKDIR /home/Project
-
 #RUN cd Project-bio-info
 RUN git clone https://github.com/lh3/bwa.git
 
 RUN cd bwa;make
-#Downloadedtools , sammtools 1.9 ,BCFTools , vcftools
+#Downloadedtools , samtools 1.9 ,BCFTools , vcftools
 RUN wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2
 RUN wget https://github.com/samtools/bcftools/releases/download/1.9/bcftools-1.9.tar.bz2
 RUN sudo apt-get install -y vcftools
@@ -41,30 +39,11 @@ RUN tar -vxjf samtools-1.9.tar.bz2
 #4.1.4.0
 RUN wget https://github.com/broadinstitute/gatk/releases/download/4.1.4.0/gatk-4.1.4.0.zip
 #EXPOSE 5000
-RUN wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/006/ERR2299966/ERR2299966_2.fastq.gz
-RUN wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/006/ERR2299966/ERR2299966_1.fastq.gz
-RUN wget http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz
-
+#RUN wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/006/ERR2299966/ERR2299966_2.fastq.gz
+#RUN wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/006/ERR2299966/ERR2299966_1.fastq.gz
+#RUN wget http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz
+RUN unzip gatk-4.1.4.0.zip
 RUN ["python3","init.py"] 
 RUN mv S288C_reference_sequence_R64-3-1_20210421.fsa bwa
-RUN mv ERR2299966_1.fastq.gz bwa
-RUN mv ERR2299966_2.fastq.gz bwa
-WORKDIR /home/Project/bwa 
-RUN ./bwa index S288C_reference_sequence_R64-3-1_20210421.fsa
-RUN ./bwa mem S288C_reference_sequence_R64-3-1_20210421.fsa ERR2299966_1.fastq.gz ERR2299966_2.fastq.gz | gzip -3 > aln-pe.sam.gz 
-RUN gunzip -f aln-pe.sam.gz
-RUN unzip  gatk-4.1.4.0.zip
-# ?
-RUN mv aln-pe.sam ../gatk-4.1.4.0
-WORKDIR /home/Project/gatk-4.1.4.0
-RUN java -jar gatk-package-4.1.4.0-local.jar
-RUN java -jar gatk-package-4.1.4.0-spark.jar
-RUN alias python='/usr/bin/python3'
-RUN sudo ln -s /usr/bin/python3 /usr/bin/python
-RUN ./gatk MarkDuplicatesSpark  -I aln-pe.sam  -O OutputNum1.bam
-#RUN wget  --quiet -yes https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh 
-#RUN bash Miniconda2-latest-Linux-x86_64.sh
-#RUN souce ~/.bashrc
-#RUN exec bash
-#RUN souce ~/.bashrc
-#RUN conda install -c bioconda samtools bcftools
+
+#-----------------------------------------------

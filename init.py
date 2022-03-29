@@ -6,15 +6,16 @@ import tarfile
 import gzip
 import shutil
 
-filereport=json.load(open("filereport.json"))
+f=json.load(open("filereport.json"))
 
-
+#d=json.load(f)
 
 class Init:
-    def _init_(self):
+    def __init__(self):
         pass
-    def downloadData(self,data,indeks):
+    def downloadData(self,data):
         link=[i["fastq_ftp"].split(";")[0]  for i in data if len(i["fastq_ftp"].split(";"))==2] +[i["fastq_ftp"].split(";")[1]  for i in data if len(i["fastq_ftp"].split(";"))==2]+ [i["fastq_ftp"].split(";")[0]  for i in data if len(i["fastq_ftp"].split(";"))==1]
+        #for i in link
         for i in link:
             cmd="wget "+ i
             os.system(cmd)            
@@ -34,6 +35,9 @@ class Init:
             out.write(file_content)
             out.close()
         a.close()
+    def downloadGenomeReference(urlgenome):
+        self.ulrGenome
+        urllib.request.urlretrieve(self.urlGenome)
     def checkmd5():
         for i,j in zip(os.listdir("data"),d):
             for e,k in enumerate(os.listdir("data/"+j["run_accession"])):
@@ -46,15 +50,16 @@ class Init:
         return True
 
 
-session=Init()
+t=Init()
 #download full 26 data from PROJ
-#session.downloadData(filereport)
+t.downloadData(f)
 #check the MD5
-# session.checkmd5()
+t.checkmd5()
 #download Genome Reference
-#session.downloadDataX("http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz")
+#t.downloadDataX("http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz")
 #dezip genome reference Racine
-session.dezipeTgzX("S288C_reference_genome_Current_Release.tgz")
+#t.dezipeTgzX("S288C_reference_genome_Current_Release.tgz")
 #dezip genome reference utulisé
-session.dezipeGzX("S288C_reference_genome_R64-3-1_20210421/S288C_reference_sequence_R64-3-1_20210421.fsa.gz")
-print(" r u looping forever? ")
+#t.dezipeGzX("S288C_reference_genome_R64-3-1_20210421/S288C_reference_sequence_R64-3-1_20210421.fsa.gz")
+
+#print(" r u looping forever? ")
