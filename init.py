@@ -15,11 +15,10 @@ class Init:
         pass
     def downloadData(self,data):
         pass
-       # link=[i["fastq_ftp"].split(";")[0]  for i in data if len(i["fastq_ftp"].split(";"))==2] +[i["fastq_ftp"].split(";")[1]  for i in data if len(i["fastq_ftp"].split(";"))==2]+ [i["fastq_ftp"].split(";")[0]  for i in data if len(i["fastq_ftp"].split(";"))==1]
-        #for i in link
-        #for i in link:
-         #   cmd="wget "+ i
-          #  os.system(cmd)            
+        link=[i["fastq_ftp"].split(";")[0]  for i in data if len(i["fastq_ftp"].split(";"))==2] +[i["fastq_ftp"].split(";")[1]  for i in data if len(i["fastq_ftp"].split(";"))==2]+ [i["fastq_ftp"].split(";")[0]  for i in data if len(i["fastq_ftp"].split(";"))==1]
+        for i in link:
+            cmd="wget "+ i
+            os.system(cmd)            
     def downloadDataX(self,link):
         FinalUrl="wget "+link
         os.system(FinalUrl)
@@ -56,7 +55,7 @@ t=Init()
 t.downloadData(f)
 os.system("wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/003/ERR2299973/ERR2299973_1.fastq.gz")
 #check the MD5
-t.checkmd5()
+#t.checkmd5()
 #download Genome Reference
 t.downloadDataX("http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz")
 #dezip genome reference Racine
