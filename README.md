@@ -18,7 +18,7 @@ Having docker and git installed </br>
 ## Installation
 
 ## MAC/Windows
-![Alt text](static/conception.png)
+![Alt text](settings.png)
 into the shell
 ```
 git clone Sykzen/Project-bio-info 
