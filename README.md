@@ -35,6 +35,12 @@ cd server Project-bio-info
 docker buildx create --use --name larger_log --driver-opt env.BUILDKIT_STEP_LOG_MAX_SIZE=50000000 
 docker buildx build .
 ```
+if you don't have buildx installed then in a dockerfile
+```
+FROM docker
+COPY --from=docker/buildx-bin /buildx /usr/libexec/docker/cli-plugins/docker-buildx
+RUN docker buildx version
+```
 ## Contributors
 
 - [Sykzen](https://github.com/Sykzen) 
