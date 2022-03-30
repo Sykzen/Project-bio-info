@@ -27,7 +27,7 @@ docker-compose up
 docker exec -it valtest bash
 ```
 ## Linux 
-![Alt text](static/conception.png)
+![Alt text](CAPTURE.PNG)
 if you don't have docker desktop installed then
 ```
 git clone Sykzen/Project-bio-info 
