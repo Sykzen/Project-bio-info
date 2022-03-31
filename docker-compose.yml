@@ -5,7 +5,7 @@ services:
     restart: always
     build: .
     tty: true
-    
+    image: project-bio-info_bioinfo
     #image: bioinfoc
     container_name: valtest
   # volumes: #pour relier la machine au conteneur

@@ -12,7 +12,10 @@ docker images
 docker-compose build
 #Crée le serveur et l'executer
 docker-compose up
+#docker-compose up avec build
+docker-compose up --build
 #forcer la recreation
+docker-compose build --no-cache   
 docker-compose up --force-recreate
 #Voir les containeur activé
 docker ps -a
@@ -22,7 +25,7 @@ docker exec -it le nom du conteneur bash
 docker exec -it djangocv bash
 ----------------SUR DOCKER NANOVIM n'est pas installé on fait donc ------------------------
 apt-get update
-apt-get -y install sudo (instaler sudo)
+apt-get -y install sudo (installer sudo)
 apt-get install vim nano
 
 

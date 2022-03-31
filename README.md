@@ -12,7 +12,8 @@ Estimate the evolutionary histories of natural and domesticated yeast
 ## Requirement:
 
 Having docker and git installed </br>
--get docker her : https://docs.docker.com/engine/install/ </br>
+-get docker her : https://docs.docker.com/engine/install/ </br> it would be better to have the latest versions 4.6 and above </br>
+-get docker-compose her : https://docs.docker.com/compose/install/ </br>
 -get git her :    https://git-scm.com/downloads </br>
 
 ## Installation
@@ -23,7 +24,7 @@ into the shell
 ```
 git clone Sykzen/Project-bio-info 
 cd server Project-bio-info
-docker-compose up
+docker-compose up --build
 docker exec -it valtest bash
 ```
 ## Linux 
@@ -41,11 +42,13 @@ FROM docker
 COPY --from=docker/buildx-bin /buildx /usr/libexec/docker/cli-plugins/docker-buildx
 RUN docker buildx version
 ```
+
 ## Contributors
 
 - [Sykzen](https://github.com/Sykzen) 
 - [Sarmedd](https://github.com/Sarmedd)
 - [BOUNEGTAMohamedRami](https://github.com/BOUNEGTAMohamedRami)
+
 
 
 

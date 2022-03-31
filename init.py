@@ -4,7 +4,6 @@ import hashlib
 import urllib.request
 import tarfile
 import gzip
-import shutil
 
 f=json.load(open("filereport.json"))
 
@@ -14,11 +13,16 @@ class Init:
     def __init__(self):
         pass
     def downloadData(self,data):
-        pass
+        
         link=[i["fastq_ftp"].split(";")[0]  for i in data if len(i["fastq_ftp"].split(";"))==2] +[i["fastq_ftp"].split(";")[1]  for i in data if len(i["fastq_ftp"].split(";"))==2]+ [i["fastq_ftp"].split(";")[0]  for i in data if len(i["fastq_ftp"].split(";"))==1]
-        for i in link:
-            cmd="wget "+ i
-            os.system(cmd)            
+        name_dir=[i.split("/")[-1] for i in link]
+        while not all(os.path.exists(i) for i in name_dir): #tant qu'il sont pas telecharger on recommence le processus
+            for e,i in enumerate(link):
+                if os.path.exists(name_dir[e]):
+                    pass
+                else:
+                    cmd="wget "+ i
+                    os.system(cmd)  #on telecharge les fichiers           
     def downloadDataX(self,link):
         FinalUrl="wget "+link
         os.system(FinalUrl)
@@ -39,7 +43,7 @@ class Init:
         self.ulrGenome
         urllib.request.urlretrieve(self.urlGenome)
     def checkmd5():
-        for i,j in zip(os.listdir("data"),d):
+        for i,j in zip(os.listdir(),d):
             for e,k in enumerate(os.listdir("data/"+j["run_accession"])):
                 original_md5=j["fastq_md5"].split(";")[e]
                 with open("data/"+str(i)+"/"+str(k),"rb") as f:
