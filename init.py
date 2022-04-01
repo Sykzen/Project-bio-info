@@ -16,13 +16,15 @@ class Init:
         
         link=[i["fastq_ftp"].split(";")[0]  for i in data if len(i["fastq_ftp"].split(";"))==2] +[i["fastq_ftp"].split(";")[1]  for i in data if len(i["fastq_ftp"].split(";"))==2]+ [i["fastq_ftp"].split(";")[0]  for i in data if len(i["fastq_ftp"].split(";"))==1]
         name_dir=[i.split("/")[-1] for i in link]
+        print(all(os.path.exists(i) for i in name_dir))
         while not all(os.path.exists(i) for i in name_dir): #tant qu'il sont pas telecharger on recommence le processus
             for e,i in enumerate(link):
                 if os.path.exists(name_dir[e]):
                     pass
                 else:
                     cmd="wget "+ i
-                    os.system(cmd)  #on telecharge les fichiers           
+                    os.system(cmd)  #on telecharge les fichiers      
+            break  
     def downloadDataX(self,link):
         FinalUrl="wget "+link
         os.system(FinalUrl)

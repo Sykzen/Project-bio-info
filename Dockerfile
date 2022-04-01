@@ -54,8 +54,8 @@ RUN for COUNTER in $(seq 66 88); do ./bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL
 #Process bwa sur les single end
 RUN for COUNTER in $(seq 2 4); do ./bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR230025${COUNTER}.fastq.gz | gzip -3 > ERR230025${COUNTER}.sam.gz;done
 # unzip puis moove les fichiers fastq.gz dans le dossier gatk
-RUN gunzip -f *.sam.gz
-RUN mv *.sam ../gatk-4.1.4.0
+RUN for samfile in *.sam.gz; do gunzip -f $samfile;done
+RUN for samfile in *.fastq.gz; do mv $samfile ../gatk-4.1.4.0;done
 #Manipulations sur le dossier gatk
 WORKDIR /home/Project/gatk-4.1.4.0
 RUN java -jar gatk-package-4.1.4.0-local.jar
@@ -63,7 +63,7 @@ RUN alias python='/usr/bin/python3'
 RUN sudo ln -s /usr/bin/python3 /usr/bin/python
 #Début des Mark duplicate sur les fichiers sam dans le dossier gatk
 RUN for Mark in *.sam;do  ./gatk MarkDuplicatesSpark -I ${Mark} -O Marked_${Mark};done
-RUN mv Marked_*.sam ../samtools-1.9
+RUN for markedsam in *.sam;do mv $markedsam ../samtools-1.9
 RUN sudo apt-get -y install libncurses5-dev
 RUN sudo apt-get -y install libbz2-dev
 RUN sudo apt-get -y install liblzma-dev
@@ -77,7 +77,7 @@ RUN rm -r samtools-1.9.tar.bz2
 RUN rm -r bcftools-1.9.tar.bz2
 RUN rm -r S288C_reference_genome_Current_Release.tgz
 WORKDIR /home/Project/bwa
-RUN rm -r *.fastq.gz 
+RUN for fastgz in *.fastq.gz;do rm -r -f $fastgz;done
 # Continue exec Haplotypecaller
 RUN mv S288C_reference_sequence_R64-3-1_20210421.fsa ../samtools-1.9/
 WORKDIR /home/Project/samtools-1.9
@@ -92,14 +92,14 @@ RUN for tosort in *.bam;do ./samtools view -bh -F 4 -q 30 ${tosort} sorted_${tos
 #index bam
 RUN for toindex in sorted_*.bam;do ./samtools index ${toindex};done
 #move les fichiers vers gatk
-RUN mv sorted_*.bam ../gatk-4.1.4.0/
-RUN mv sorted.*.bam.bai ../gatk-4.1.4.0/
+RUN for sorted_bam in sorted_*.bam;do mv ${sorted_bam} ../gatk-4.1.4.0/;done
+RUN for sorted_bam in sorted_*.bam.bai;do mv ${sorted_bam} ../gatk-4.1.4.0/;done
 RUN mv S288C_reference_sequence_R64-3-1_20210421.fasta ../gatk-4.1.4.0/
 RUN mv S288C_reference_sequence_R64-3-1_20210421.fasta.fai ../gatk-4.1.4.0/
 WORKDIR /home/Project/gatk-4.1.4.0
 RUN ./gatk CreateSequenceDictionary -R S288C_reference_sequence_R64-3-1_20210421.fasta
 RUN for haplo in sorted_*.bam;do ./gatk HaplotypeCaller -R S288C_reference_sequence_R64-3-1_20210421.fasta -I ${haplo} -O ${haplo::-4}.g.vcf.gz -ERC GVCF;done
-RUN gunzip -f *.g.vcf.gz
+RUN for gvdcfgz in *.g.vcf.gz;do gunzip -f ${gvdcfgz} ;done
 
 
 #----------------------------------------------
