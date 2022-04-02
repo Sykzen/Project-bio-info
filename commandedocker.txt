@@ -1,5 +1,7 @@
 #Pour executer dockerfile
 docker build .
+#Rename container
+docker image tag ancien_tag nouveau_nom:latest
 #executer l'image du dockerfile pour devenir container 
 docker run -t -d name_container
 #docker build with image name
