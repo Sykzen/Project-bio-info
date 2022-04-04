@@ -54,9 +54,9 @@ RUN rm -r S288C_reference_genome_Current_Release.tgz
 WORKDIR /home/Project/bwa
 RUN ./bwa index S288C_reference_sequence_R64-3-1_20210421.fsa
 #Process bwa sur les paired end
-RUN for COUNTER in $(seq 66 88); do ./bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR22999${COUNTER}_1.fastq.gz ERR22999${COUNTER}_2.fastq.gz | gzip -3 > ERR22999${COUNTER}.sam.gz;done
+RUN ./bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR2299977_1.fastq.gz ERR2299978_2.fastq.gz | gzip -3 > ERR2299978.sam.gz;done
 #Process bwa sur les single end
-RUN for COUNTER in $(seq 2 4); do ./bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR230025${COUNTER}.fastq.gz | gzip -3 > ERR230025${COUNTER}.sam.gz;done
+RUN ./bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR2300254.fastq.gz | gzip -3 > ERR2300254.sam.gz;done
 # unzip puis moove les fichiers fastq.gz dans le dossier gatk et samtools
 RUN mv S288C_reference_sequence_R64-3-1_20210421.fsa ../samtools-1.9/
 RUN for fastgz in *.fastq.gz;do rm -r -f $fastgz;done

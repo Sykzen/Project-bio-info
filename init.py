@@ -25,8 +25,9 @@ class Init:
                     cmd="wget "+ i
                     os.system(cmd)  #on telecharge les fichiers      
             break
-    #def downloadtest():
-     #   for i in ["ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/007/ERR2299977/ERR2299977_1.fastq.gz","ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/006/ERR2299976/ERR2299976_2","ftp.sra.ebi.ac.uk/vol1/fastq/ERR230/004/ERR2300254/ERR2300254.fastq.gz"]
+    def downloadtest():
+        for i in ["ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/007/ERR2299977/ERR2299977_1.fastq.gz","ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/008/ERR2299978/ERR2299978_2.fastq.gz","ftp.sra.ebi.ac.uk/vol1/fastq/ERR230/004/ERR2300254/ERR2300254.fastq.gz"]:
+            os.system("wget"+i)
     def downloadDataX(self,link):
         FinalUrl="wget "+link
         os.system(FinalUrl)
@@ -60,7 +61,7 @@ class Init:
 
 t=Init()
 #download full 26 data from PROJ
-t.downloadData(f)
+t.downloadtest()
 #check the MD5
 #t.checkmd5()
 #download Genome Reference
