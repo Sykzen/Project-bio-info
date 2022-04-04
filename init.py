@@ -65,7 +65,11 @@ t.downloadtest()
 #check the MD5
 #t.checkmd5()
 #download Genome Reference
-t.downloadDataX("http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz")
+e=0
+while not os.path.exists("S288C_reference_genome_Current_Release.tgz"):
+    e+=1
+    t.downloadDataX("http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz")
+    print("loop "+e)
 #dezip genome reference Racine
 t.dezipeTgzX("S288C_reference_genome_Current_Release.tgz")
 #dezip genome reference utulisé

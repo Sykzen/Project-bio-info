@@ -16,12 +16,12 @@ RUN sudo apt-get -y install \
 WORKDIR /home/Project
 
 RUN sudo apt-get -y install openjdk-8-jdk
-RUN git clone https://github.com/Sykzen/Project-bio-info.git /home/Project
+
 #cd /home/Project/Project-bio-info
 
 #RUN cd Project-bio-info
 RUN git clone https://github.com/lh3/bwa.git
-
+RUN git clone https://github.com/Sykzen/Project-bio-info.git
 RUN cd bwa;make
 #Downloadedtools , samtools 1.9 ,BCFTools , vcftools
 RUN wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2
@@ -46,8 +46,8 @@ RUN wget https://github.com/broadinstitute/gatk/releases/download/4.1.4.0/gatk-4
 RUN unzip gatk-4.1.4.0.zip
 #clean
 RUN rm -r gatk-4.1.4.0.zip
+ENTRYPOINT ["python3","init.py"] 
 RUN rm -r samtools-1.9.tar.bz2
-RUN ["python3","init.py"] 
 RUN rm -r bcftools-1.9.tar.bz2
 
 RUN mv S288C_reference_sequence_R64-3-1_20210421.fsa bwa
