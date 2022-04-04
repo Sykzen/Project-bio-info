@@ -14,8 +14,9 @@ RUN sudo apt-get -y install \
 
 
 WORKDIR /home/Project
-RUN git clone https://github.com/Sykzen/Project-bio-info.git /home/Project
+
 RUN sudo apt-get -y install openjdk-8-jdk
+RUN git clone https://github.com/Sykzen/Project-bio-info.git /home/Project
 #cd /home/Project/Project-bio-info
 
 #RUN cd Project-bio-info
@@ -33,6 +34,7 @@ RUN sudo apt -y --no-install-recommends install picard-tools
 #Dezip BCFTools,samtools
 RUN tar -vxjf bcftools-1.9.tar.bz2
 #RUN cd bcftools;make
+
 RUN tar -vxjf samtools-1.9.tar.bz2
 #RUN cd samtools;make
 #4.1.4.0
@@ -45,8 +47,9 @@ RUN unzip gatk-4.1.4.0.zip
 #clean
 RUN rm -r gatk-4.1.4.0.zip
 RUN rm -r samtools-1.9.tar.bz2
-RUN rm -r bcftools-1.9.tar.bz2
 RUN ["python3","init.py"] 
+RUN rm -r bcftools-1.9.tar.bz2
+
 RUN mv S288C_reference_sequence_R64-3-1_20210421.fsa bwa
 RUN for fastqfile in *.fastq.gz; do mv $fastqfile bwa;done
 RUN mv S288C_reference_genome_R64-3-1_20210421 bwa 
