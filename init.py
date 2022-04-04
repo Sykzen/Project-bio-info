@@ -26,7 +26,7 @@ class Init:
                     os.system(cmd)  #on telecharge les fichiers      
             break
     def downloadtest(self):
-        for i in ["ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/007/ERR2299977/ERR2299977_1.fastq.gz","ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/008/ERR2299978/ERR2299978_2.fastq.gz","ftp.sra.ebi.ac.uk/vol1/fastq/ERR230/004/ERR2300254/ERR2300254.fastq.gz"]:
+        for i in ["ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/008/ERR2299968/ERR2299968_2.fastq.gz","ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/008/ERR2299968/ERR2299968_1.fastq.gz","ftp.sra.ebi.ac.uk/vol1/fastq/ERR230/004/ERR2300254/ERR2300254.fastq.gz"]:
             os.system("wget "+i)
     def downloadDataX(self,link):
         FinalUrl="wget "+link
@@ -72,9 +72,8 @@ while not os.path.exists("S288C_reference_genome_Current_Release.tgz"):
     print("loop number "+str(e))
 #dezip genome reference Racine
 t.dezipeTgzX("S288C_reference_genome_Current_Release.tgz")
-print(" fichier S288C_reference_genome_Current_Release.tgz déziper")
+print("dezipe genome reference")
 #dezip genome reference utulisé
 t.dezipeGzX("S288C_reference_genome_R64-3-1_20210421/S288C_reference_sequence_R64-3-1_20210421.fsa.gz")
-print(" fichier S288C_reference_genome_R64-3-1_20210421/S288C_reference_sequence_R64-3-1_20210421.fsa.gz déziper")
-
+print("dezipe genome reference/S288C_reference_sequence_R64-3-1_20210421.fsa.gz")
 print(" End ")

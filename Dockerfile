@@ -43,10 +43,14 @@ RUN wget https://github.com/broadinstitute/gatk/releases/download/4.1.4.0/gatk-4
 #RUN wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/006/ERR2299966/ERR2299966_2.fastq.gz
 #RUN wget ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/006/ERR2299966/ERR2299966_1.fastq.gz
 #RUN wget http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz
+RUN git pull
 RUN unzip gatk-4.1.4.0.zip
 #clean
-RUN rm -r gatk-4.1.4.0.zip
+
+
 RUN ["python3","init.py"] 
+RUN rm -r gatk-4.1.4.0.zip
+
 RUN rm -r samtools-1.9.tar.bz2
 RUN rm -r bcftools-1.9.tar.bz2
 
@@ -70,7 +74,7 @@ WORKDIR /home/Project/gatk-4.1.4.0
 RUN java -jar gatk-package-4.1.4.0-local.jar
 RUN alias python='/usr/bin/python3'
 RUN sudo ln -s /usr/bin/python3 /usr/bin/python
-#Début des Mark duplicate sur les fichiers sam dans le dossier gatk
+#Début des Mark duplicate sur les fichiers sam dans le dossier gatk 
 RUN for Mark in *.sam;do  ./gatk MarkDuplicatesSpark -I ${Mark} -O Marked_${Mark};done
 RUN for markedsam in Marked_*.sam;do mv $markedsam ../samtools-1.9;done
 RUN sudo apt-get -y install libncurses5-dev
@@ -88,22 +92,25 @@ RUN for flastated in flagstated_*.txt;do mv $flastated ..;done
 RUN mv S288C_reference_sequence_R64-3-1_20210421.fsa S288C_reference_sequence_R64-3-1_20210421.fasta
 #prepare le fichier fasta
 RUN ./samtools faidx S288C_reference_sequence_R64-3-1_20210421.fasta
-#rename les sam en bam
-RUN for mvtobam in *.sam;do mv ${mvtobam} ${mvtobam}.bam;done
-#sort bam
+#rename les sam en bam----------------Possible Erreur 
+RUN for mvtobam in *.sam;do mv ${mvtobam} ${mvtobam}.bam;done 
+#sort bam----------------Possible Erreur  --- Avat le Marked
 RUN for tosort in *.bam;do ./samtools sort ${tosort} > sorted_${tosort};done
 
 #RUN for tosort in *.bam;do ./samtools view -bh -F 4 -q 30 ${tosort} sorted_${tosort};done
-#index bam
+#index bam------ Enlever cette ligne ? 
 RUN for toindex in sorted_*.bam;do ./samtools index ${toindex};done
 #move les fichiers vers gatk
 RUN for sorted_bam in sorted_*.bam;do mv ${sorted_bam} ../gatk-4.1.4.0/;done
-RUN for sorted_bam in sorted_*.bam.bai;do mv ${sorted_bam} ../gatk-4.1.4.0/;done
+# RM -r ?
+#RUN for sorted_bam in sorted_*.bam.bai;do mv ${sorted_bam} ../gatk-4.1.4.0/;done
 RUN mv S288C_reference_sequence_R64-3-1_20210421.fasta ../gatk-4.1.4.0/
+
 RUN mv S288C_reference_sequence_R64-3-1_20210421.fasta.fai ../gatk-4.1.4.0/
 WORKDIR /home/Project/gatk-4.1.4.0
 RUN ./gatk CreateSequenceDictionary -R S288C_reference_sequence_R64-3-1_20210421.fasta
 RUN for haplo in sorted_*.bam;do ./gatk HaplotypeCaller -R S288C_reference_sequence_R64-3-1_20210421.fasta -I ${haplo} -O haplotyped_${haplo}.g.vcf.gz -ERC GVCF;done
+
 RUN for gvdcfgz in *.g.vcf.gz;do gunzip -f ${gvdcfgz} ;done
 RUN for gencover in sorted*.bam;do bedtools genomecov -ibam ${gencover} -bga > genomecov_${gencover}.txt;done
 RUN tab='   ';for gvcf_file in *.sam.bam; do echo -e ${gvcf_file}${tab}${gvcf_file}.g.vcf.gz >> concatenated_gcf.sample_map; done
