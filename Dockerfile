@@ -12,7 +12,7 @@ RUN sudo apt-get -y install \
     nano
 
 
-
+RUN git clone https://github.com/Sykzen/Project-bio-info.git /home/Project
 WORKDIR /home/Project
 
 RUN sudo apt-get -y install openjdk-8-jdk
@@ -21,7 +21,7 @@ RUN sudo apt-get -y install openjdk-8-jdk
 
 #RUN cd Project-bio-info
 RUN git clone https://github.com/lh3/bwa.git
-RUN git clone https://github.com/Sykzen/Project-bio-info.git
+
 RUN cd bwa;make
 #Downloadedtools , samtools 1.9 ,BCFTools , vcftools
 RUN wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2
@@ -46,7 +46,7 @@ RUN wget https://github.com/broadinstitute/gatk/releases/download/4.1.4.0/gatk-4
 RUN unzip gatk-4.1.4.0.zip
 #clean
 RUN rm -r gatk-4.1.4.0.zip
-ENTRYPOINT ["python3","init.py"] 
+RUN ["python3","init.py"] 
 RUN rm -r samtools-1.9.tar.bz2
 RUN rm -r bcftools-1.9.tar.bz2
 
@@ -106,5 +106,5 @@ RUN ./gatk CreateSequenceDictionary -R S288C_reference_sequence_R64-3-1_20210421
 RUN for haplo in sorted_*.bam;do ./gatk HaplotypeCaller -R S288C_reference_sequence_R64-3-1_20210421.fasta -I ${haplo} -O haplotyped_${haplo}.g.vcf.gz -ERC GVCF;done
 RUN for gvdcfgz in *.g.vcf.gz;do gunzip -f ${gvdcfgz} ;done
 RUN for gencover in sorted*.bam;do bedtools genomecov -ibam ${gencover} -bga > genomecov_${gencover}.txt;done
-RUN tab='   ';for gvcf_file in *g.vcf; do echo -e {gvcf_file}${tab}${gvcf_file}.gz>>concatenated_gcf.sample_map; done
+RUN tab='   ';for gvcf_file in *.sam.bam; do echo -e ${gvcf_file}${tab}${gvcf_file}.g.vcf.gz >> concatenated_gcf.sample_map; done
 #----------------------------------------------

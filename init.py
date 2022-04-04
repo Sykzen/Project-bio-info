@@ -69,10 +69,12 @@ e=0
 while not os.path.exists("S288C_reference_genome_Current_Release.tgz"):
     e+=1
     t.downloadDataX("http://sgd-archive.yeastgenome.org/sequence/S288C_reference/genome_releases/S288C_reference_genome_Current_Release.tgz")
-    print("loop "+e)
+    print("loop number "+e)
 #dezip genome reference Racine
 t.dezipeTgzX("S288C_reference_genome_Current_Release.tgz")
+print(" fichier S288C_reference_genome_Current_Release.tgz déziper")
 #dezip genome reference utulisé
 t.dezipeGzX("S288C_reference_genome_R64-3-1_20210421/S288C_reference_sequence_R64-3-1_20210421.fsa.gz")
+print(" fichier S288C_reference_genome_R64-3-1_20210421/S288C_reference_sequence_R64-3-1_20210421.fsa.gz déziper")
 
-print(" r u looping forever? ")
+print(" End ")
