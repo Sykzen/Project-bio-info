@@ -9,7 +9,7 @@ RUN sudo apt-get -y install \
     libz-dev \
     gcc \
     unzip \
-    vim 
+    nano
 
 
 
@@ -88,7 +88,9 @@ RUN ./samtools faidx S288C_reference_sequence_R64-3-1_20210421.fasta
 #rename les sam en bam
 RUN for mvtobam in *.sam;do mv ${mvtobam} ${mvtobam}.bam;done
 #sort bam
-RUN for tosort in *.bam;do ./samtools view -bh -F 4 -q 30 ${tosort} sorted_${tosort};done
+RUN for tosort in *.bam;do ./samtools sort ${tosort} > sorted_${tosort};done
+
+#RUN for tosort in *.bam;do ./samtools view -bh -F 4 -q 30 ${tosort} sorted_${tosort};done
 #index bam
 RUN for toindex in sorted_*.bam;do ./samtools index ${toindex};done
 #move les fichiers vers gatk
@@ -98,8 +100,8 @@ RUN mv S288C_reference_sequence_R64-3-1_20210421.fasta ../gatk-4.1.4.0/
 RUN mv S288C_reference_sequence_R64-3-1_20210421.fasta.fai ../gatk-4.1.4.0/
 WORKDIR /home/Project/gatk-4.1.4.0
 RUN ./gatk CreateSequenceDictionary -R S288C_reference_sequence_R64-3-1_20210421.fasta
-RUN for haplo in sorted_*.bam;do ./gatk HaplotypeCaller -R S288C_reference_sequence_R64-3-1_20210421.fasta -I ${haplo} -O ${haplo}.g.vcf.gz -ERC GVCF;done
+RUN for haplo in sorted_*.bam;do ./gatk HaplotypeCaller -R S288C_reference_sequence_R64-3-1_20210421.fasta -I ${haplo} -O haplotyped_${haplo}.g.vcf.gz -ERC GVCF;done
 RUN for gvdcfgz in *.g.vcf.gz;do gunzip -f ${gvdcfgz} ;done
-
-
+RUN for gencover in sorted*.bam;do bedtools genomecov -ibam ${gencover} -bga > genomecov_${gencover}.txt;done
+RUN tab='   ';for gvcf_file in *g.vcf; do echo -e {gvcf_file}${tab}${gvcf_file}.gz>>concatenated_gcf.sample_map; done
 #----------------------------------------------

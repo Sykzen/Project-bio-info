@@ -24,7 +24,9 @@ class Init:
                 else:
                     cmd="wget "+ i
                     os.system(cmd)  #on telecharge les fichiers      
-            break  
+            break
+    #def downloadtest():
+     #   for i in ["ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/007/ERR2299977/ERR2299977_1.fastq.gz","ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/006/ERR2299976/ERR2299976_2","ftp.sra.ebi.ac.uk/vol1/fastq/ERR230/004/ERR2300254/ERR2300254.fastq.gz"]
     def downloadDataX(self,link):
         FinalUrl="wget "+link
         os.system(FinalUrl)
