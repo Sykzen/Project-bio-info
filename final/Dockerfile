@@ -9,10 +9,15 @@ RUN sudo apt-get -y install \
     libz-dev \
     gcc \
     unzip \
-    nano
+    nano \
+    libncurses5-dev \
+    libbz2-dev \
+    liblzma-dev
 #------------------------------------Full Installation----------------------------------------------------------------------------------------------------
+
 RUN git clone https://github.com/Sykzen/Project-bio-info.git /home/Project
 WORKDIR /home/Project
+RUN ["python3","init.py"]
 RUN sudo apt-get -y install openjdk-8-jdk
 RUN git clone https://github.com/lh3/bwa.git
 RUN cd bwa;make
@@ -25,16 +30,25 @@ RUN sudo apt -y --no-install-recommends install picard-tools
 #Dezip BCFTools,samtools
 RUN tar -vxjf bcftools-1.9.tar.bz2
 RUN tar -vxjf samtools-1.9.tar.bz2
+#----Configure Samtools------
+WORKDIR /home/Project/samtools-1.9
+RUN ./configure
+RUN make 
+WORKDIR /home/Project
 #GATK 4.1.4.0
 RUN wget https://github.com/broadinstitute/gatk/releases/download/4.1.4.0/gatk-4.1.4.0.zip
 RUN unzip gatk-4.1.4.0.zip
-RUN ["python3","init.py"]
+WORKDIR /home/Project/gatk-4.1.4.0
+RUN java -jar gatk-package-4.1.4.0-local.jar
+RUN alias python='/usr/bin/python3'
+RUN sudo ln -s /usr/bin/python3 /usr/bin/python
+WORKDIR /home/Project
 #Cclean
 RUN rm -r gatk-4.1.4.0.zip
 RUN rm -r S288C_reference_genome_Current_Release.tgz
 RUN rm -r samtools-1.9.tar.bz2
 RUN rm -r bcftools-1.9.tar.bz2
-#Add to path
+#-------------------Export Algo to Path --------------------------------------------
 ENV PATH="/home/Project/gatk-4.1.4.0:${PATH}"
 #ENV PATH=$PATH:/home/Project/gatk-4.1.4.0
 ENV PATH="/home/Project/bwa:${PATH}"
@@ -43,10 +57,20 @@ ENV PATH="/home/Project/samtools-1.9:${PATH}"
 #ENV PATH=$PATH:/home/Project/samtools-1.9
 ENV PATH="/home/Project/bcftools-1.9:${PATH}"
 #ENV  PATH=$PATH:/home/Project/bcftools-1.9
-
-
 #------------------------------------- End Full Installation----------------------------------------------------------------------------------------------------
 #-------------------------------------Begin Index with bwa algorithm ----------------------------------------------------------------------------------------------------
 RUN bwa index S288C_reference_sequence_R64-3-1_20210421.fsa
+
+#RUN bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR2299978_1.fastq.gz ERR2299978_2.fastq.gz | gzip -3 > ERR2299978.sam.gz;done
+#RUN bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR2299984_1.fastq.gz ERR2299984_2.fastq.gz| gzip -3 > ERR2299984.sam.gz;done
+#RUN bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR2299968_1.fastq.gz ERR2299968_2.fastq.gz| gzip -3 > ERR2299968.sam.gz;done
+#RUN bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR2300254.fastq.gz | gzip -3 > ERR2300254.sam.gz;done
+#Clean 2
+#RUN for fastgz in *.fastq.gz;do rm -r -f $fastgz;done
+#RUN for samfile in *.sam.gz; do gunzip -f $samfile;done
+#-------------------------------------------Begin sort/view/faidx with sam algorithm
+#RUN for tosort in *.sam;do samtools sort ${tosort} > sorted_${tosort};done
+#RUN for toview in *.sam;do samtools view -S -b ${toview} > ${toview}.bam;done
+
 
 

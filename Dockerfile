@@ -52,7 +52,7 @@ RUN rm -r S288C_reference_genome_Current_Release.tgz
 WORKDIR /home/Project/bwa
 RUN ./bwa index S288C_reference_sequence_R64-3-1_20210421.fsa
 #Process bwa sur les paired end
-RUN ./bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR2299977_1.fastq.gz ERR2299978_2.fastq.gz | gzip -3 > ERR2299978.sam.gz;done
+RUN ./bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR2299978_1.fastq.gz ERR2299978_2.fastq.gz | gzip -3 > ERR2299978.sam.gz;done
 #Process bwa sur les single end
 RUN ./bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR2300254.fastq.gz | gzip -3 > ERR2300254.sam.gz;done
 # unzip puis moove les fichiers fastq.gz dans le dossier gatk et samtools
@@ -77,6 +77,7 @@ WORKDIR /home/Project/gatk-4.1.4.0
 RUN java -jar gatk-package-4.1.4.0-local.jar
 RUN alias python='/usr/bin/python3'
 RUN sudo ln -s /usr/bin/python3 /usr/bin/python
+#---------------------------------------------------------------------------------------------------------------------
 #Début des Mark duplicate sur les fichiers bam dans le dossier gatk 
 RUN for Mark in *.bam;do  ./gatk MarkDuplicatesSpark -I ${Mark} -O Marked_${Mark};done
 RUN for tomove in Marked_*.bam; do mv ${tomove} ../samtools-1.9;done
