@@ -61,16 +61,27 @@ ENV PATH="/home/Project/bcftools-1.9:${PATH}"
 #-------------------------------------Begin Index with bwa algorithm ----------------------------------------------------------------------------------------------------
 RUN bwa index S288C_reference_sequence_R64-3-1_20210421.fsa
 
-#RUN bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR2299978_1.fastq.gz ERR2299978_2.fastq.gz | gzip -3 > ERR2299978.sam.gz;done
-#RUN bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR2299984_1.fastq.gz ERR2299984_2.fastq.gz| gzip -3 > ERR2299984.sam.gz;done
-#RUN bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR2299968_1.fastq.gz ERR2299968_2.fastq.gz| gzip -3 > ERR2299968.sam.gz;done
-#RUN bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR2300254.fastq.gz | gzip -3 > ERR2300254.sam.gz;done
+RUN bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR2299978_1.fastq.gz ERR2299978_2.fastq.gz | gzip -3 > ERR2299978.sam.gz;done
+RUN bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR2299984_1.fastq.gz ERR2299984_2.fastq.gz| gzip -3 > ERR2299984.sam.gz;done
+RUN bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR2299968_1.fastq.gz ERR2299968_2.fastq.gz| gzip -3 > ERR2299968.sam.gz;done
+RUN bwa mem -R '@RG\tID:ID\tSM:SAMPLE_NAME\tPL:illumina\tPU:PU\tLB:LB' S288C_reference_sequence_R64-3-1_20210421.fsa ERR2300254.fastq.gz | gzip -3 > ERR2300254.sam.gz;done
 #Clean 2
-#RUN for fastgz in *.fastq.gz;do rm -r -f $fastgz;done
-#RUN for samfile in *.sam.gz; do gunzip -f $samfile;done
-#-------------------------------------------Begin sort/view/faidx with sam algorithm
-#RUN for tosort in *.sam;do samtools sort ${tosort} > sorted_${tosort};done
-#RUN for toview in *.sam;do samtools view -S -b ${toview} > ${toview}.bam;done
-
-
-
+RUN for fastgz in *.fastq.gz;do rm -r -f $fastgz;done
+#unzip
+RUN for samfile in *.sam.gz; do gunzip -f $samfile;done
+#-------------------------------------------Begin sort/view/faixa/index with samtools----------------------------------------------------------------------------------------------------
+#sort
+RUN for tosort in *.sam;do samtools sort ${tosort} > sorted_${tosort};done
+#view change from sam to bam
+RUN for toview in *.sam;do samtools view -S -b ${toview} > ${toview}.bam;done
+#Markdupliacte on bam
+RUN for Mark in *.bam;do  gatk MarkDuplicatesSpark -I ${Mark} -O Marked_${Mark};done
+#faidx the genom reference
+RUN mv S288C_reference_sequence_R64-3-1_20210421.fsa S288C_reference_sequence_R64-3-1_20210421.fasta
+RUN samtools faidx S288C_reference_sequence_R64-3-1_20210421.fasta
+#export with flagstat
+RUN for flagst in Marked_sorted*.bam;do samtools flagstat  ${flagst} > flagstated_${flagst}.txt;done
+#---------------------------------------------------------------------------
+RUN gatk CreateSequenceDictionary -R S288C_reference_sequence_R64-3-1_20210421.fasta
+RUN for haplo in Marked_*.bam;do gatk HaplotypeCaller -R S288C_reference_sequence_R64-3-1_20210421.fasta -I ${haplo} -O Haplotyped_${haplo}.g.vcf.gz -ERC GVCF;done
+#RUN for toindex in Marked_*.bam;do samtools index ${toindex};done
