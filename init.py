@@ -61,7 +61,7 @@ class Init:
 
 t=Init()
 #download full 26 data from PROJ
-t.downloadtest()
+t.downloadData(f)
 #check the MD5
 #t.checkmd5()
 #download Genome Reference
