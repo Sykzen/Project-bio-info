@@ -21,13 +21,13 @@ RUN ["python3","init.py"]
 RUN sudo apt-get -y install openjdk-8-jdk
 RUN git clone https://github.com/lh3/bwa.git
 RUN cd bwa;make
-#Download , samtools 1.9 ,BCFTools , vcftools
+#------------------------------Download , samtools 1.9 ,BCFTools , vcftools----------------------------------------------
 RUN wget https://github.com/samtools/samtools/releases/download/1.9/samtools-1.9.tar.bz2
 RUN wget https://github.com/samtools/bcftools/releases/download/1.9/bcftools-1.9.tar.bz2
 RUN sudo apt-get install -y vcftools
 RUN sudo apt install bedtools
 RUN sudo apt -y --no-install-recommends install picard-tools 
-#Dezip BCFTools,samtools
+#-----Dezip BCFTools,samtools
 RUN tar -vxjf bcftools-1.9.tar.bz2
 RUN tar -vxjf samtools-1.9.tar.bz2
 #----Configure Samtools------
@@ -72,19 +72,21 @@ RUN for samfile in *.sam.gz; do gunzip -f $samfile;done
 #sort
 RUN for tosort in *.sam;do samtools sort ${tosort} > sorted_${tosort};done
 #view change from sam to bam
-RUN for toview in *.sam;do samtools view -S -b ${toview} > ${toview}.bam;done
+RUN for toview in sorted_*.sam;do samtools view -S -b ${toview} > ${toview%%.*}.bam;done
+#Supprimer les fichiers sam
+RUN for todel in *.sam;do rm -r -f $todel;done
 #Markdupliacte on bam
-RUN for Mark in *.bam;do  gatk MarkDuplicatesSpark -I ${Mark} -O Marked_${Mark};done
+RUN for Mark in sorted*.bam;do  gatk MarkDuplicatesSpark -I ${Mark} -O Marked_${Mark};done
 #faidx the genom reference
 RUN mv S288C_reference_sequence_R64-3-1_20210421.fsa S288C_reference_sequence_R64-3-1_20210421.fasta
 RUN samtools faidx S288C_reference_sequence_R64-3-1_20210421.fasta
 #export with flagstat
-RUN for flagst in Marked_sorted*.bam;do samtools flagstat  ${flagst} > flagstated_${flagst}.txt;done
+RUN for flagst in Marked_*.bam;do samtools flagstat  ${flagst} > flagstated_${flagst%%.*}.txt;done
+
 #---------------------------------------------------------------------------
 RUN gatk CreateSequenceDictionary -R S288C_reference_sequence_R64-3-1_20210421.fasta
-RUN for haplo in Marked_*.bam;do gatk HaplotypeCaller -R S288C_reference_sequence_R64-3-1_20210421.fasta -I ${haplo} -O Haplotyped_${haplo}.g.vcf.gz -ERC GVCF;done
+RUN for haplo in Marked_*.bam;do gatk HaplotypeCaller -R S288C_reference_sequence_R64-3-1_20210421.fasta -I ${haplo} -O Haplotyped_${haplo%%.*}.g.vcf.gz -ERC GVCF;done
+RUN for gencover in Marked_*.bam;do bedtools genomecov -ibam ${gencover} -bga > genomecov_${gencover%%.*}.txt;done
 #RUN for toindex in Marked_*.bam;do samtools index ${toindex};done
-
-#RUN for gvdcfgz in *.g.vcf.gz;do gunzip -f ${gvdcfgz} ;done
-#RUN for gencover in sorted*.bam;do bedtools genomecov -ibam ${gencover} -bga > genomecov_${gencover}.txt;done
-#RUN tab='   ';for gvcf_file in *.sam.bam; do echo -e ${gvcf_file}${tab}${gvcf_file}.g.vcf.gz >> concatenated_gcf.sample_map; done
+#RUN tab='   ';for gvcf_file in *g.vcf; do echo -e {gvcf_file}${tab}${gvcf_file}.gz>>concatenated_gcf.sample_map; done
+#ftp.sra.ebi.ac.uk/vol1/fastq/ERR229/008/ERR2299978/ERR2299978_1.fastq.gz

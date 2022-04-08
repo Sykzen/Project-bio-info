@@ -6,9 +6,6 @@ import tarfile
 import gzip
 
 f=json.load(open("filereport.json"))
-
-#d=json.load(f)
-
 class Init:
     def __init__(self):
         pass
@@ -46,7 +43,7 @@ class Init:
     def downloadGenomeReference(urlgenome):
         self.ulrGenome
         urllib.request.urlretrieve(self.urlGenome)
-    def checkmd5():
+    def checkmd5_windows():
         for i,j in zip(os.listdir(),d):
             for e,k in enumerate(os.listdir("data/"+j["run_accession"])):
                 original_md5=j["fastq_md5"].split(";")[e]
@@ -56,11 +53,20 @@ class Init:
                         return False
                 
         return True
-
+    def checkmd5_Linux_alpine():
+        for fastqgz in os.listdir():
+            if fastqgz[-3:]=="gz":
+                for runaccession in f:
+                    if runaccession["run_accession"]==fastqgz[:-3]:
+                        if runaccession["fastq_md5"]==hashlib.md5(open(fastqgz,"rb").read()).hexdigest():
+                            pass            
+                        else:
+                            return False
+        
 
 t=Init()
 #download full 26 data from PROJ
-t.downloadData(f)
+#t.downloadtest()
 #check the MD5
 #t.checkmd5()
 #download Genome Reference
