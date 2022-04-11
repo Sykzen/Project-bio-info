@@ -10,48 +10,43 @@ Estimate the evolutionary histories of natural and domesticated yeast
 
 ## Display
 
-$RESULTAT FINAL$
+![Alt text](graph/venn_avant_filtre.png)
 
 ## Requirement:
 
 Having docker and git installed </br>
--get docker her : https://docs.docker.com/engine/install/ </br> it would be better to have the latest versions 4.6 and above </br>
--get docker-compose her : https://docs.docker.com/compose/install/ </br>
--get git her : https://git-scm.com/downloads </br>
+
+- https://www.ebi.ac.uk/ena/browser/view/PRJEB24932?show=reads
+  -get docker her : https://docs.docker.com/engine/install/ </br> it would be better to have the latest versions 4.6 and above </br>
+  -get docker-compose her : https://docs.docker.com/compose/install/ </br>
+  -get git her : https://git-scm.com/downloads </br>
 
 ## Installation
 
 ## MAC/Windows
 
 ![Alt text](settings.png)
-into the shell
+telecharger les fatsq et le genome de reference depuis de site de l'ENA (voir liens au dessus)
+
+sur le shell
 
 ```
 git clone Sykzen/Project-bio-info
-cd server Project-bio-info
+cd Project-bio-info
 docker-compose up --build
-docker exec -it valtest bash
 ```
 
 ## Linux
 
-![Alt text](settings.png)
-if you don't have docker desktop installed then
-
 ```
 git clone Sykzen/Project-bio-info
-cd server Project-bio-info
+cd Project-bio-info
+/usr/bin/python3 init_linux.py #/usr/bin/python si python3=python
 docker buildx create --use --name larger_log --driver-opt env.BUILDKIT_STEP_LOG_MAX_SIZE=50000000
 docker buildx build .
 ```
 
-if you don't have buildx installed then in a dockerfile
-
-```
-FROM docker
-COPY --from=docker/buildx-bin /buildx /usr/libexec/docker/cli-plugins/docker-buildx
-RUN docker buildx version
-```
+Docker buildx est installé de base sur les verions de docker 4 et supérieur
 
 ## Export Data
 
@@ -59,7 +54,11 @@ RUN docker buildx version
 great_mccarthy le nom du container
 ```
 
-docker cp great_mccarthy:/home/Project/ ..
+docker cp great_mccarthy:/home/Project/export ./export
+
+## Compiler l'ipnyb
+
+avoir les flagstats sur jupyter notebook
 
 ## Contributors
 
