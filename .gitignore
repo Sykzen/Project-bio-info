@@ -3,5 +3,7 @@ bwa
 *.tgz
 *.fastq
 *.txt
-final
-
+SNP_export.gz
+.Rproj.user
+export_slim_buster
+export
